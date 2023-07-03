@@ -37,6 +37,7 @@
             id="autocomplete"
             class="input-error input-xxlarge"
             v-model="keyword"
+            @keyup.enter="goSearch"
           />
           <button class="sui-btn btn-xlarge btn-danger" type="button" @click="goSearch">
             搜索
@@ -56,7 +57,6 @@ export default {
     }
   },
   methods: {
-
     goSearch() {
       let location = {
         name: 'search', 
@@ -67,6 +67,12 @@ export default {
       }
       this.$router.push(location);
     }
+  },
+  mounted() {
+    // 通过全局事件总线清除关键字
+    this.$bus.$on('clear', ()=> {
+      this.keyword = '';
+    })
   }
 };
 </script>
