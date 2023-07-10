@@ -3,7 +3,7 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <Carousel :list="bannerList"/>
+        <Carousel :list="bannerList" />
       </div>
       <div class="right">
         <div class="news">
@@ -89,7 +89,7 @@ export default {
     ...mapState({
       bannerList: (state) => state.home.bannerList,
     }),
-  }
+  },
 };
 </script>
 
@@ -164,7 +164,7 @@ export default {
           width: 25%;
 
           .list-item {
-            background-image: url(./images/icons.png);
+            background-image: url(~@/assets/images/icons.png);
             width: 61px;
             height: 40px;
             display: block;

@@ -12,31 +12,65 @@
           </ul>
           <ul class="fl sui-tag">
             <!-- 分类的面包屑 -->
-            <li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">×</i></li>
+            <li class="with-x" v-if="searchParams.categoryName">
+              {{ searchParams.categoryName
+              }}<i @click="removeCategoryName">×</i>
+            </li>
             <!-- 关键字的面包屑 -->
-            <li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">×</i></li>
+            <li class="with-x" v-if="searchParams.keyword">
+              {{ searchParams.keyword }}<i @click="removeKeyword">×</i>
+            </li>
             <!-- 品牌的面包屑 -->
-            <li class="with-x" v-if="searchParams.trademark">{{searchParams.trademark.split(':')[1]}}<i @click="removeTrademark">×</i></li>
+            <li class="with-x" v-if="searchParams.trademark">
+              {{ searchParams.trademark.split(":")[1]
+              }}<i @click="removeTrademark">×</i>
+            </li>
             <!-- 售卖属性值 -->
-            <li class="with-x" v-for="(attrValue, index) in searchParams.props" :key="index">
-              {{attrValue.split(':')[1]}}
-            <i @click="removeAttrValue(index)">×</i></li>
+            <li
+              class="with-x"
+              v-for="(attrValue, index) in searchParams.props"
+              :key="index"
+            >
+              {{ attrValue.split(":")[1] }}
+              <i @click="removeAttrValue(index)">×</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector @trademarkInfo="trademarkHandler" @attrInfo="attrInfoHandler"/>
+        <SearchSelector
+          @trademarkInfo="trademarkHandler"
+          @attrInfo="attrInfoHandler"
+        />
 
         <!--details-->
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li :class="{active:isOne}" @click="changeOrder('1')">
-                  <a>综合<span v-show="isOne" class="iconfont" :class="{'icon-arrowup': isAsc, 'icon-arrowdown': isDesc}"></span></a>
+                <li :class="{ active: isOne }" @click="changeOrder('1')">
+                  <a
+                    >综合<span
+                      v-show="isOne"
+                      class="iconfont"
+                      :class="{
+                        'icon-arrowup': isAsc,
+                        'icon-arrowdown': isDesc,
+                      }"
+                    ></span
+                  ></a>
                 </li>
-                <li :class="{active:isTwo}" @click="changeOrder('2')">
-                  <a>价格<span v-show="isTwo" class="iconfont" :class="{'icon-arrowup': isAsc, 'icon-arrowdown': isDesc}"></span></a>
+                <li :class="{ active: isTwo }" @click="changeOrder('2')">
+                  <a
+                    >价格<span
+                      v-show="isTwo"
+                      class="iconfont"
+                      :class="{
+                        'icon-arrowup': isAsc,
+                        'icon-arrowdown': isDesc,
+                      }"
+                    ></span
+                  ></a>
                 </li>
               </ul>
             </div>
@@ -48,7 +82,7 @@
                 <div class="list-wrap">
                   <div class="p-img">
                     <router-link :to="`/detail/${good.id}`">
-                      <img :src="good.defaultImg" />
+                      <img v-lazy="good.defaultImg" />
                     </router-link>
                   </div>
                   <div class="price">
@@ -85,7 +119,13 @@
             </ul>
           </div>
           <!-- 分页器 -->
-          <Pagination :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total" :continues="5" @getPageNo="getPageNo"/>
+          <Pagination
+            :pageNo="searchParams.pageNo"
+            :pageSize="searchParams.pageSize"
+            :total="total"
+            :continues="5"
+            @getPageNo="getPageNo"
+          />
         </div>
       </div>
     </div>
@@ -130,20 +170,20 @@ export default {
   computed: {
     ...mapGetters(["goodsList"]),
     isOne() {
-      return this.searchParams.order.indexOf('1')!==-1;
+      return this.searchParams.order.indexOf("1") !== -1;
     },
     isTwo() {
-      return this.searchParams.order.indexOf('2')!==-1;
+      return this.searchParams.order.indexOf("2") !== -1;
     },
     isAsc() {
-      return this.searchParams.order.indexOf('asc')!==-1;
+      return this.searchParams.order.indexOf("asc") !== -1;
     },
     isDesc() {
-      return this.searchParams.order.indexOf('desc')!==-1;
+      return this.searchParams.order.indexOf("desc") !== -1;
     },
     ...mapState({
-      total: state => state.search.searchData.total
-    })
+      total: (state) => state.search.searchData.total,
+    }),
   },
   methods: {
     getData() {
@@ -158,8 +198,8 @@ export default {
       // this.getData();
       // 地址栏也需要修改，进行路由跳转
       // 本意是删除query，如果路径中出现params不应该删除，路由跳转的时候应该带着
-      let location = {name: 'search'};
-      if(this.$route.params) {
+      let location = { name: "search" };
+      if (this.$route.params) {
         location.params = this.$route.params;
       }
       this.$router.push(location);
@@ -167,10 +207,10 @@ export default {
     removeKeyword() {
       this.searchParams.keyword = undefined;
       // 通知header组件清除关键字
-      this.$bus.$emit('clear');
+      this.$bus.$emit("clear");
       // 进行路由的跳转
-      let location = {name: 'search'};
-      if(this.$route.query) {
+      let location = { name: "search" };
+      if (this.$route.query) {
         location.query = this.$route.query;
       }
       this.$router.push(location);
@@ -190,7 +230,7 @@ export default {
     attrInfoHandler(attr, attrValue) {
       let props = `${attr.attrId}:${attrValue}:${attr.attrName}`;
       // 不能重复添加，在数组中没有才添加
-      if(this.searchParams.props.indexOf(props) === -1) {
+      if (this.searchParams.props.indexOf(props) === -1) {
         this.searchParams.props.push(props);
       }
       this.getData();
@@ -199,9 +239,9 @@ export default {
       // flag:点击的，综合是1，价格是2
       let originFlag = this.searchParams.order.split(":")[0];
       let originSort = this.searchParams.order.split(":")[1];
-      let newOrder = '';
-      if(flag===originFlag) {
-        newOrder = `${originFlag}:${originSort==='desc'?'asc':'desc'}`;
+      let newOrder = "";
+      if (flag === originFlag) {
+        newOrder = `${originFlag}:${originSort === "desc" ? "asc" : "desc"}`;
       } else {
         newOrder = `${flag}:desc`;
       }
@@ -211,12 +251,12 @@ export default {
     getPageNo(pageNo) {
       this.searchParams.pageNo = pageNo;
       this.getData();
-    }
+    },
   },
   watch: {
     // 监听属性
     $route(newValue, oldValue) {
-      console.log('watch');
+      console.log("watch");
       this.searchParams.category1Id = undefined;
       this.searchParams.category2Id = undefined;
       this.searchParams.category3Id = undefined;
