@@ -82,7 +82,7 @@
                 <div class="list-wrap">
                   <div class="p-img">
                     <router-link :to="`/detail/${good.id}`">
-                      <img v-lazy="good.defaultImg" />
+                      <img v-lazy="buildGoodsImg(good.defaultImg)" />
                     </router-link>
                   </div>
                   <div class="price">
@@ -251,6 +251,12 @@ export default {
     getPageNo(pageNo) {
       this.searchParams.pageNo = pageNo;
       this.getData();
+    },
+    buildGoodsImg(defaultImg) {
+      return defaultImg.replace(
+        "http://39.98.123.211/",
+        "https://mundane.ink/imgSph/"
+      );
     },
   },
   watch: {

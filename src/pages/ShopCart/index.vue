@@ -21,7 +21,7 @@
             />
           </li>
           <li class="cart-list-con2">
-            <img :src="cart.imgUrl" />
+            <img :src="buildGoodsImg(cart.imgUrl)" />
             <div class="item-msg">
               {{ cart.skuName }}
             </div>
@@ -158,6 +158,12 @@ export default {
         console.log(error.message);
         alert(error.message);
       }
+    },
+    buildGoodsImg(defaultImg) {
+      return defaultImg.replace(
+        "http://39.98.123.211/",
+        "https://mundane.ink/imgSph/"
+      );
     },
   },
   computed: {
