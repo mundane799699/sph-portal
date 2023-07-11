@@ -1,4 +1,4 @@
-# app
+# 尚硅谷-尚品汇项目
 
 ## Project setup
 ```
